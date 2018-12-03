@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import React from "react";
 import { Router, Route, browserHistory } from "react-router";
+import { Session } from 'meteor/session';
 
 import Signup from "../ui/Signup";
 import Dashboard from "../ui/Dashboard";
@@ -19,6 +20,14 @@ const onEnterPublicPage = () => {
 const onEnterPrivatePage = () => {
   if (!Meteor.userId()) {
     browserHistory.replace("/");
+  }
+};
+
+const onEnterListPage = (nextState) => {
+  if (!Meteor.userId()) {
+    browserHistory.replace("/");
+  } else {
+    Session.set('selectedListId', nextState.params.id);
   }
 };
 
@@ -46,7 +55,7 @@ export const routes = (
     <Route
       path="/dashboard/:id"
       component={Dashboard}
-      onEnter={onEnterPrivatePage}
+      onEnter={onEnterListPage}
     />
     <Route path="*" component={NotFound} />
   </Router>

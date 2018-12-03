@@ -2,6 +2,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from "meteor/react-meteor-data";
 import SingleListItem from "./SingleListItem";
+import { Session } from 'meteor/session';
 
 import  { GroceryLists } from "../api/grocery-list";
 import GroceryListHeader from "./GroceryListHeader";
@@ -25,10 +26,17 @@ GroceryListComponent.propTypes = {
 };
 
 export default createContainer(() => {
+  const selectedListId = Session.get('selectedListId');
+
   Meteor.subscribe('groceryLists');
 
   return {
-    lists: GroceryLists.find().fetch()
+    lists: GroceryLists.find().fetch().map(list => {
+      return {
+        ...list,
+        selected: list._id === selectedListId
+      };
+    })
   };
 }, GroceryListComponent);
 
