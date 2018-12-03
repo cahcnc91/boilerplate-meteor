@@ -2,18 +2,24 @@ import React from "react";
 import { createContainer } from "meteor/react-meteor-data";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
+import { browserHistory } from 'react-router';
 
 import { GroceryLists } from "../api/grocery-list";
 import { ListOfItems } from './ListOfItems';
 
 export class Editor extends React.Component {
-  onSubmit(e) {
 
+  onSubmit(e) {
     e.preventDefault();
     
     const item = this.refs.item.value.trim();
     this.props.call("groceryLists.update", this.props.list._id, item);
     this.refs.item.value = "";
+  }
+
+  handleDelete (){
+    this.props.call('groceryLists.remove', this.props.list._id);
+    this.props.browserHistory.push('/dashboard');
   }
 
   render() {
@@ -26,8 +32,10 @@ export class Editor extends React.Component {
             <button>+</button>
           </form>
           <ListOfItems items={items}/>
-          <button>Delete List</button>
-          <button>Clear List</button>
+          <div>
+            <button onClick={this.handleDelete.bind(this)}>Delete List</button>
+            <button>Clear List</button>
+          </div>
         </div>
       );
     } else {
@@ -42,7 +50,9 @@ export class Editor extends React.Component {
 
 Editor.propTypes = {
   list: React.PropTypes.object,
-  selectedListId: React.PropTypes.string
+  selectedListId: React.PropTypes.string,
+  call: React.PropTypes.func.isRequired,
+  browserHistory: React.PropTypes.object.isRequired
 };
 
 export default createContainer(() => {
@@ -51,6 +61,7 @@ export default createContainer(() => {
   return {
     selectedListId,
     list: GroceryLists.findOne(selectedListId),
-    call: Meteor.call
+    call: Meteor.call,
+    browserHistory
   };
 }, Editor);
