@@ -70,30 +70,17 @@ if (Meteor.isServer) {
     });
 
     it("should update list", function() {
-      const listName = "This is a updated title for test list.";
+      const item = "cake";
 
       Meteor.server.method_handlers["groceryLists.update"].apply(
         {
           userId: listOne.userId
         },
-        [listOne._id, { listName }]
+        [listOne._id,  item ]
       );
 
       const list = GroceryLists.findOne(listOne._id);
-      expect(list).toInclude({
-        listName
-      });
-    });
-
-    it("should not update if extra updates", function() {
-      expect(() => {
-        Meteor.server.method_handlers["groceryLists.update"].apply(
-          {
-            userId: listOne.userId
-          },
-          [listOne._id, { listName: "new name", nameTest: "Camila" }]
-        );
-      }).toThrow();
+      expect(list.items[0]).toContain({name: item});
     });
 
     it("should not update list if user was not creator", function() {

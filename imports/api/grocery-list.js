@@ -70,6 +70,7 @@ Meteor.methods({
       }
     )
   },
+  
 
   "groceryLists.update"(_id, item) {
     if (!this.userId) {
@@ -80,17 +81,12 @@ Meteor.methods({
       _id: {
         type: String,
         min: 1
-      },
-      item: {
-        type: String,
-        min: 1
       }
     }).validate({
-      _id,
-      item
+      _id
     });
 
-    //UPDATE ARRAY OF ITEMS, ADD ITEMS
+ 
     GroceryLists.update(
       {
         _id,
