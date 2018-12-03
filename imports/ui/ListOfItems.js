@@ -1,9 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { createContainer } from "meteor/react-meteor-data";
 
-import { SingleItem } from './SingleItem';
-
+import SingleItem from './SingleItem';
 
 export const ListOfItems = (props) => {
   return (
@@ -11,7 +9,7 @@ export const ListOfItems = (props) => {
         Items {props.items.length}
 
         {props.items.map((item, index) => {
-          return <SingleItem key={index} item={item}/>;
+          return <SingleItem key={index} item={item} list ={props.list}/>;
         })}
       </div>
     );
@@ -19,5 +17,6 @@ export const ListOfItems = (props) => {
 };
 
 ListOfItems.propTypes = {
- items: React.PropTypes.array.isRequired
+ items: React.PropTypes.array.isRequired,
+ list: React.PropTypes.object.isRequired
 };

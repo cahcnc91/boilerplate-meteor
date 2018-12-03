@@ -10,7 +10,7 @@ export default class Dashboard extends React.Component {
         <PrivateHeader title="Your boilerPlate code" />
         <div>
           <GroceryListComponent />
-          <Editor />
+          <Editor/>
         </div>
       </div>
     );

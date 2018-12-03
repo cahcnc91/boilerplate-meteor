@@ -4,9 +4,9 @@ import SimpleSchema from "simpl-schema";
 
 export const GroceryLists = new Mongo.Collection("groceryLists");
 
-if(Meteor.isServer) {
-  Meteor.publish('groceryLists', function () {
-    return GroceryLists.find({ userId: this.userId});
+if (Meteor.isServer) {
+  Meteor.publish("groceryLists", function() {
+    return GroceryLists.find({ userId: this.userId });
   });
 }
 
@@ -22,7 +22,7 @@ Meteor.methods({
         required: true
       }
     }).validate({ listName });
-    
+
     return GroceryLists.insert({
       listName,
       userId: this.userId,
@@ -31,6 +31,7 @@ Meteor.methods({
     });
   },
 
+  //REMOVE LIST
   "groceryLists.remove"(_id) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
@@ -44,6 +45,30 @@ Meteor.methods({
     }).validate({ _id });
 
     GroceryLists.remove({ _id, userId: this.userId });
+  },
+
+  //REMOVE ITEM
+  "groceryLists.removeItem"(_id, item) {
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized");
+    }
+
+    GroceryLists.update(
+      {
+        _id,
+        userId: this.userId
+      },
+      {
+        $pull: {
+          items: {
+            _id: item
+          }
+        },
+        $set: {
+          updatedAt: new Date().getTime()
+        }
+      }
+    )
   },
 
   "groceryLists.update"(_id, item) {
@@ -65,14 +90,55 @@ Meteor.methods({
       item
     });
 
-    GroceryLists.update({
-      _id, 
-      userId: this.userId
-    }, {
-      $push: {
-        items: {name: item, checked: false}
+    //UPDATE ARRAY OF ITEMS, ADD ITEMS
+    GroceryLists.update(
+      {
+        _id,
+        userId: this.userId
+      },
+      {
+        $push: {
+          items: {
+            _id: new Meteor.Collection.ObjectID(),
+            name: item,
+            checked: false
+          }
+        },
+        $set: {
+          updatedAt: new Date().getTime()
+        }
       }
-    });
+    );
+  },
 
+  //UPDATE ITEM, CHANGE CHECKED STATE
+  "groceryLists.updateItem"(_id, itemId, checked) {
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized");
+    }
+
+    GroceryLists.update(
+      {
+        _id,
+        userId: this.userId,
+        items: {
+          $elementMatch: {
+            _id: {
+              _str: itemId
+            }
+          }
+        }
+      },
+      {
+        $set: {
+          items: {
+            checked: checked
+          }
+        },
+        $set: {
+          updatedAt: new Date().getTime()
+        }
+      }
+    );
   }
 });

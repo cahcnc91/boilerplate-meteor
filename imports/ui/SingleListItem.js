@@ -8,7 +8,7 @@ export const SingleListItem = (props) => {
         props.Session.set('selectedListId', props.list._id);
       }}>
       <h4>{props.list.listName}</h4>
-      { props.list.selected ? 'selected': undefined }
+      { props.list.selected ? <p>Selected, {props.list._id}</p>: undefined }
     </div>
   );
 }

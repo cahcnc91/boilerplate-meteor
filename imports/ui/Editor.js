@@ -26,12 +26,12 @@ export class Editor extends React.Component {
     if (this.props.list) {
       const items = this.props.list.items;
       return (
-        <div>
+        <div className="item-list">
           <form onSubmit={this.onSubmit.bind(this)}>
             <input type="text" ref="item" placeholder="Item new Item"/>
             <button>+</button>
           </form>
-          <ListOfItems items={items}/>
+          <ListOfItems items={items} list={this.props.list}/>
           <div>
             <button onClick={this.handleDelete.bind(this)}>Delete List</button>
             <button>Clear List</button>
