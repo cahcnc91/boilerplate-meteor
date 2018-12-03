@@ -27,6 +27,7 @@ export class Editor extends React.Component {
           </form>
           <ListOfItems items={items}/>
           <button>Delete List</button>
+          <button>Clear List</button>
         </div>
       );
     } else {
