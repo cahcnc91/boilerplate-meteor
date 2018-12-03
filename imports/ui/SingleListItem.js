@@ -1,15 +1,22 @@
 import React from 'react';
+import { Session } from 'meteor/session';
+import { createContainer } from 'meteor/react-meteor-data';
 
-const SingleListItem = (props) => {
+export const SingleListItem = (props) => {
   return (
-    <div>
-      <h4>{props.groceryList.listName}</h4>
+    <div onClick={() => {
+        props.Session.set('selectedListId', props.list._id);
+      }}>
+      <h4>{props.list.listName}</h4>
     </div>
   );
 }
 
 SingleListItem.propTypes = {
-  groceryList: React.PropTypes.object.isRequired
+  list: React.PropTypes.object.isRequired,
+  Session: React.PropTypes.object.isRequired
 }
 
-export default SingleListItem;
+export default createContainer(() => {
+  return { Session };
+}, SingleListItem);

@@ -8,7 +8,6 @@ export class GroceryListHeader extends React.Component {
     e.preventDefault();
     
     const listName = this.refs.listName.value.trim();
-    console.log(listName);
 
     if (listName.length === 0) {
       return 'Not authorized'
@@ -30,10 +29,6 @@ export class GroceryListHeader extends React.Component {
   }
   
 };
-
-GroceryListHeader.propTypes = {
-  meteorCall: React.propTypes.func.isRequired
-}
 
 export default createContainer(() => {
   return {

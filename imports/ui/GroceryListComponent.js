@@ -6,20 +6,17 @@ import SingleListItem from "./SingleListItem";
 import  { GroceryLists } from "../api/grocery-list";
 import GroceryListHeader from "./GroceryListHeader";
 
-export class GroceryListComponent extends React.Component   {
-  render (){
-    console.log(this.props.lists)
+export const GroceryListComponent = (props) => {
     return (
       <div>
         <GroceryListHeader />
-        List {this.props.lists.length}
+        List {props.lists.length}
 
-        { this.props.lists.map(groceryList => {
-          return <SingleListItem key={groceryList._id} groceryList={groceryList}/>;
+        { props.lists.map(list => {
+          return <SingleListItem key={list._id} list={list}/>;
         })}
       </div>
     );
-  }
 
 };
 
