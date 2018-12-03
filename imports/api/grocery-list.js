@@ -46,7 +46,7 @@ Meteor.methods({
     GroceryLists.remove({ _id, userId: this.userId });
   },
 
-  "groceryLists.update"(_id, updates) {
+  "groceryLists.update"(_id, item) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
     }
@@ -56,21 +56,21 @@ Meteor.methods({
         type: String,
         min: 1
       },
-      listName: {
+      item: {
         type: String,
         min: 1
       }
     }).validate({
       _id,
-      ...updates
+      item
     });
 
     GroceryLists.update({
       _id, 
       userId: this.userId
     }, {
-      $set: {
-        ...updates
+      $push: {
+        items: {name: item, checked: false}
       }
     });
 
