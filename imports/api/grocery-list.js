@@ -1,13 +1,12 @@
 import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
-import moment from "moment";
 import SimpleSchema from "simpl-schema";
 
 export const GroceryLists = new Mongo.Collection("groceryLists");
 
-if(Meteor.isServer){
+if(Meteor.isServer) {
   Meteor.publish('groceryLists', function () {
-    return GroceryLists.find({ userId: this.userId });
+    return GroceryLists.find({ userId: this.userId});
   });
 }
 
@@ -17,10 +16,18 @@ Meteor.methods({
       throw new Meteor.Error("Not authorized");
     }
 
+    new SimpleSchema({
+      listName: {
+        type: String,
+        required: true
+      }
+    }).validate({ listName });
+    
     return GroceryLists.insert({
       listName,
-      adminUserId: this.userId
-      //updatedAt: moment().valueOf()  //new Date().getTime()
+      userId: this.userId,
+      items: [],
+      updatedAt: new Date().getTime()
     });
   },
 
