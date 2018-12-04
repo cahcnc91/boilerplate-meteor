@@ -7,7 +7,7 @@ export default class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <PrivateHeader title="Your boilerPlate code" />
+        <PrivateHeader title="GroceryListApp" />
         <div>
           <GroceryListComponent />
           <Editor/>

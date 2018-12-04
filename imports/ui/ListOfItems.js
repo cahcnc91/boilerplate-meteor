@@ -1,6 +1,4 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
-
 import SingleItem from './SingleItem';
 
 export const ListOfItems = (props) => {

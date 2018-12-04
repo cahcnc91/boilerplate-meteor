@@ -11,8 +11,10 @@ export const SingleItem = (props) => {
 
   return (
     <div>
-      {props.item.name}
-      <button onClick={handleRemove}>X</button>
+      <div className="checkbox">
+        <input type="checkbox" value=""/>
+          {props.item.name} <span> <button onClick={handleRemove}>X</button> </span>
+      </div>
     </div>
   );
 }

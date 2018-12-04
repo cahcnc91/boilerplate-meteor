@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router';
 
 import { GroceryLists } from "../api/grocery-list";
 import { ListOfItems } from './ListOfItems';
+import  Modal from './Modal';
 
 export class Editor extends React.Component {
 
@@ -35,6 +36,7 @@ export class Editor extends React.Component {
           <div>
             <button onClick={this.handleDelete.bind(this)}>Delete List</button>
             <button>Clear List</button>
+            <Modal list={this.props.list}/>
           </div>
         </div>
       );
@@ -65,3 +67,4 @@ export default createContainer(() => {
     browserHistory
   };
 }, Editor);
+
