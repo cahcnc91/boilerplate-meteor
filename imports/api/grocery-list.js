@@ -6,10 +6,12 @@ export const GroceryLists = new Mongo.Collection("groceryLists");
 
 if (Meteor.isServer) {
   Meteor.publish("groceryLists", function() {
-    return GroceryLists.find( { $or: [ 
-      { userId: this.userId }, 
-      { collaborator: { $elemMatch: { collaboratorId: this.userId } } }
-    ] });
+    return GroceryLists.find({
+      $or: [
+        { userId: this.userId },
+        { collaborator: { $elemMatch: { collaboratorId: this.userId } } }
+      ]
+    });
   });
 }
 
@@ -72,9 +74,9 @@ Meteor.methods({
           updatedAt: new Date().getTime()
         }
       }
-    )
+    );
   },
-  
+
   //UPDATE LIST, ADD ITEM
   "groceryLists.update"(_id, item) {
     if (!this.userId) {
@@ -110,8 +112,8 @@ Meteor.methods({
     );
   },
 
-   //UPDATE LIST, ADD COLLABORATOR
-   "groceryLists.updateUsers"(_id, collaboratorId) {
+  //UPDATE LIST, ADD COLLABORATOR
+  "groceryLists.updateUsers"(_id, collaboratorId) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
     }
@@ -135,33 +137,20 @@ Meteor.methods({
   },
 
   //UPDATE ITEM, CHANGE CHECKED STATE
-  "groceryLists.updateItem"(_id, itemId, checked) {
+  "groceryLists.updateItem"(_id, itemId, isChecked) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
     }
 
     GroceryLists.update(
       {
-        _id,
-        userId: this.userId,
-        items: {
-          $elementMatch: {
-            _id: {
-              _str: itemId
-            }
-          }
-        }
+        $and: [
+          { _id: _id },
+          { items: { $elemMatch: { _id: itemId } } }
+        ]
       },
-      {
-        $set: {
-          items: {
-            checked: checked
-          }
-        },
-        $set: {
-          updatedAt: new Date().getTime()
-        }
-      }
+      { $set: { "items.$.checked": isChecked}}
     );
   }
+
 });

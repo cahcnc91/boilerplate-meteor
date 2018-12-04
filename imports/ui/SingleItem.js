@@ -9,10 +9,24 @@ export const SingleItem = (props) => {
     props.call('groceryLists.removeItem', props.list._id, props.item._id);
   }
 
+  handleCheck = () => {
+    let isChecked;
+    
+    if (props.item.checked === false) {
+      isChecked = true;
+    } else {
+      isChecked = false;
+    }
+
+    console.log(isChecked)
+    props.call('groceryLists.updateItem', props.list._id, props.item._id, isChecked);
+
+  }
+
   return (
     <div>
       <div className="checkbox">
-        <input type="checkbox" value=""/>
+        <input type="checkbox" checked={props.item.checked} onChange={handleCheck}/>
           {props.item.name} <span> <button onClick={handleRemove}>X</button> </span>
       </div>
     </div>
