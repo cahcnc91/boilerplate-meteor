@@ -33,7 +33,7 @@ Meteor.methods({
       userId: this.userId,
       items: [],
       collaborator: [],
-      updatedAt: new Date().getTime()
+      lastUpdated: new Date().getTime()
     });
   },
 
@@ -71,7 +71,7 @@ Meteor.methods({
           }
         },
         $set: {
-          updatedAt: new Date().getTime()
+          lastUpdated: new Date().getTime()
         }
       }
     );
@@ -106,7 +106,7 @@ Meteor.methods({
           }
         },
         $set: {
-          updatedAt: new Date().getTime()
+          lastUpdated: new Date().getTime()
         }
       }
     );
@@ -130,7 +130,7 @@ Meteor.methods({
           }
         },
         $set: {
-          updatedAt: new Date().getTime()
+          lastUpdated: new Date().getTime()
         }
       }
     );
@@ -149,7 +149,7 @@ Meteor.methods({
           { items: { $elemMatch: { _id: itemId } } }
         ]
       },
-      { $set: { "items.$.checked": isChecked}}
+      { $set: { "items.$.checked": isChecked, "lastUpdated": new Date().getTime()}}
     );
   }
 

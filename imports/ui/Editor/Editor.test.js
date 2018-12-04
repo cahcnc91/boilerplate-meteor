@@ -4,7 +4,7 @@ var expect = require("expect");
 import { mount } from "enzyme";
 
 import { Editor } from "./Editor";
-import { lists } from "../fixtures/fixtures";
+import { lists } from "../../fixtures/fixtures";
 
 if (Meteor.isClient) {
   describe("Editor", function() {

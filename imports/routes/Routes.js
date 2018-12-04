@@ -3,10 +3,10 @@ import React from "react";
 import { Router, Route, browserHistory } from "react-router";
 import { Session } from 'meteor/session';
 
-import Signup from "../ui/Signup";
+import Signup from "../ui/Signup-Login/Signup";
 import Dashboard from "../ui/Dashboard";
 import NotFound from "../ui/NotFound";
-import Login from "../ui/Login";
+import Login from "../ui/Signup-Login/Login";
 
 const onEnterListPage = (nextState) => {
   Session.set('selectedListId', nextState.params.id);

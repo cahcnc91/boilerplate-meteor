@@ -3,7 +3,7 @@ import React from "react";
 var expect = require("expect");
 import { mount } from "enzyme";
 
-import { lists } from "../fixtures/fixtures";
+import { lists } from "../../fixtures/fixtures";
 import { SingleListItem } from "./SingleListItem";
 
 if (Meteor.isClient) {

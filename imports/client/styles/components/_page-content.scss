@@ -1,0 +1,14 @@
+.page-content {
+  margin: 0 auto;
+  max-width: $site-max-width;
+  padding: $space;
+  display: flex;
+}
+
+.page-content__sidebar {
+  width: $page-content-sidebar-width;
+}
+
+.page-content__main {
+  width: $page-content-main-width;
+}

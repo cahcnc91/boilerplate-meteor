@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { Meteor } from 'meteor/meteor';
 
 import { GroceryListComponent } from './GroceryListComponent';
-import { lists } from '../fixtures/fixtures';
+import { lists } from '../../fixtures/fixtures';
 
 if (Meteor.isClient) {
   describe('GroceryListComponent', function () {

@@ -22,7 +22,7 @@ export class GroceryListHeader extends React.Component {
       <div>
         <form onSubmit={this.onSubmit.bind(this)}>
           <input type="text" ref="listName" name="listName" placeholder="New List Name" />
-          <button>+</button>
+          <button className="button">+</button>
         </form>
       </div>
     );

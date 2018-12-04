@@ -3,10 +3,11 @@ import { createContainer } from "meteor/react-meteor-data";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { browserHistory } from 'react-router';
+import moment from 'moment';
 
-import { GroceryLists } from "../api/grocery-list";
-import { ListOfItems } from './ListOfItems';
-import  Modal from './Modal';
+import { GroceryLists } from "../../api/grocery-list";
+import { ListOfItems } from '../List of Items/ListOfItems';
+import  Modal from '../Modal-UserLIst/Modal';
 
 export class Editor extends React.Component {
 
@@ -28,14 +29,15 @@ export class Editor extends React.Component {
       const items = this.props.list.items;
       return (
         <div className="item-list">
+          <p>last updated { moment(this.props.list.lastUpdated).fromNow() }</p>
           <form onSubmit={this.onSubmit.bind(this)}>
             <input type="text" ref="item" placeholder="Item new Item"/>
             <button>+</button>
           </form>
           <ListOfItems items={items} list={this.props.list}/>
           <div>
-            <button onClick={this.handleDelete.bind(this)}>Delete List</button>
-            <button>Clear List</button>
+            <button className="button button--pill"onClick={this.handleDelete.bind(this)}>Delete List</button>
+            <button className="button button--pill">Clear List</button>
             <Modal list={this.props.list}/>
           </div>
         </div>

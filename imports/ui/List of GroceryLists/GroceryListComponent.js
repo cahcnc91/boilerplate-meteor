@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from "meteor/react-meteor-data";
-import SingleListItem from "./SingleListItem";
+import SingleListItem from "../List of Items/SingleListItem";
 import { Session } from 'meteor/session';
 
-import  { GroceryLists } from "../api/grocery-list";
+import  { GroceryLists } from "../../api/grocery-list";
 import GroceryListHeader from "./GroceryListHeader";
 
 export const GroceryListComponent = (props) => {
