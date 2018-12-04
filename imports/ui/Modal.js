@@ -1,8 +1,10 @@
 import React from "react";
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from "meteor/react-meteor-data";
+import ModalUserBox from './ModalUserBox';
 
 export class Modal extends React.Component {
+
   render(){
     return (
       <div className="">
@@ -20,24 +22,21 @@ export class Modal extends React.Component {
                 <button type="button" className="close" data-dismiss="modal">&times;</button>
               </div>
               
-              <div className="modal-body">
-                <div className="checkbox">
-                  {this.props.listUser.map((user, index) => {
-                    return (
-                      <div key={index}>
-                        <input type="checkbox" value="" />
-                        {user.emails[0].address}
-                      </div>
-                    )
-                  })}
-                  
+                <div className="modal-body">
+
+                    <div className="checkbox">
+                      {this.props.listUser.map((user, index) => {
+                        return (
+                          <ModalUserBox key={index} user={user} list={this.props.list}/>
+                        )
+                      })}
+                    </div>
+                </div>
+              
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
 
-              </div>
-              
-              <div className="modal-footer">
-                <button type="button" className="btn btn-danger" data-dismiss="modal">Close</button>
-              </div>
               
             </div>
           </div>
@@ -56,6 +55,6 @@ Modal.propTypes = {
   Meteor.subscribe('userList');
 
   return {
-    listUser: Meteor.users.find().fetch()
+    listUser: Meteor.users.find().fetch(),
     }
 }, Modal);

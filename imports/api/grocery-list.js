@@ -6,7 +6,10 @@ export const GroceryLists = new Mongo.Collection("groceryLists");
 
 if (Meteor.isServer) {
   Meteor.publish("groceryLists", function() {
-    return GroceryLists.find({ userId: this.userId });
+    return GroceryLists.find( { $or: [ 
+      { userId: this.userId }, 
+      { collaborator: { $elemMatch: { collaboratorId: this.userId } } }
+    ] });
   });
 }
 
@@ -27,6 +30,7 @@ Meteor.methods({
       listName,
       userId: this.userId,
       items: [],
+      collaborator: [],
       updatedAt: new Date().getTime()
     });
   },
@@ -71,7 +75,7 @@ Meteor.methods({
     )
   },
   
-
+  //UPDATE LIST, ADD ITEM
   "groceryLists.update"(_id, item) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
@@ -86,7 +90,6 @@ Meteor.methods({
       _id
     });
 
- 
     GroceryLists.update(
       {
         _id,
@@ -98,6 +101,30 @@ Meteor.methods({
             _id: new Meteor.Collection.ObjectID(),
             name: item,
             checked: false
+          }
+        },
+        $set: {
+          updatedAt: new Date().getTime()
+        }
+      }
+    );
+  },
+
+   //UPDATE LIST, ADD COLLABORATOR
+   "groceryLists.updateUsers"(_id, collaboratorId) {
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized");
+    }
+
+    GroceryLists.update(
+      {
+        _id,
+        userId: this.userId
+      },
+      {
+        $push: {
+          collaborator: {
+            collaboratorId: collaboratorId
           }
         },
         $set: {
