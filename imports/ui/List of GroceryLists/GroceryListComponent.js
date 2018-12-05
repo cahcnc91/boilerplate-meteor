@@ -6,16 +6,19 @@ import { Session } from 'meteor/session';
 
 import  { GroceryLists } from "../../api/grocery-list";
 import GroceryListHeader from "./GroceryListHeader";
+import EmptyList from '../EmptyList';
 
 export const GroceryListComponent = (props) => {
     return (
-      <div>
+      <div className="list-of-lists">
         <GroceryListHeader />
-        List {props.lists.length}
-
-        { props.lists.map(list => {
-          return <SingleListItem key={list._id} list={list}/>;
-        })}
+        
+        <div className="list-item">
+          {props.lists.length === 0? <EmptyList /> : undefined}
+          { props.lists.map(list => {
+            return <SingleListItem key={list._id} list={list}/>;
+          })}
+        </div>
       </div>
     );
 

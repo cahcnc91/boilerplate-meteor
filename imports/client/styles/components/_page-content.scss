@@ -1,14 +1,36 @@
+@mixin desktop {
+  @media(min-width: 50rem){
+    @content;
+  }
+}
+
 .page-content {
-  margin: 0 auto;
-  max-width: $site-max-width;
-  padding: $space;
   display: flex;
+  margin: 0 auto;
+  height: $page-content-height;
+  max-width: $site-max-width;
+
+  @include desktop {
+    padding: $large-space $space;
+  }
 }
 
 .page-content__sidebar {
+  //display: flex;
+  display: none;
   width: $page-content-sidebar-width;
+
+  @include desktop {
+    display: flex;
+  }
 }
 
 .page-content__main {
-  width: $page-content-main-width;
+  display: flex;
+  width: 100%;
+
+  @include desktop {
+    width: $page-content-main-width;
+  }
+  
 }

@@ -6,7 +6,6 @@ import { Meteor } from "meteor/meteor";
 export class ModalUserBox extends React.Component {
 
   onSubmit = () => {
-    console.log(this.props.list._id, this.props.user._id )
     this.props.call('groceryLists.updateUsers', this.props.list._id, this.props.user._id);
   }
 

@@ -1,0 +1,48 @@
+//Item list
+.list-of-lists {
+  background-color: white;
+  border: 1px solid $grey;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+//add-list-bar
+.add-bar {
+  position: relative;
+  padding: $space;
+}
+
+//Items
+.list-item {
+  width: 100%;
+}
+
+.item {
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  padding: $space;
+  transition: background-color .3s ease, border-left .3s ease;
+}
+
+.item:hover {
+  background-color: $light-grey;
+  border-left: 4px solid $grey;
+}
+
+.item--selected, item--selected:hover {
+  background-color: $light-grey;
+  border-left: 4px solid $brand-primary;
+}
+
+.item__title {
+  font-size: $base-font-size;
+  padding-top: $space;
+  padding-bottom: $space;
+  margin: 0;
+}
+
+.item--selected .item__title {
+  font-weight: bold;
+}
+
+

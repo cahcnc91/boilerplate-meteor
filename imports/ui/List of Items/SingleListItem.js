@@ -3,12 +3,13 @@ import { Session } from 'meteor/session';
 import { createContainer } from 'meteor/react-meteor-data';
 
 export const SingleListItem = (props) => {
+  const className = props.list.selected ? 'item item--selected' : 'item';
+
   return (
-    <div onClick={() => {
+    <div className={className} onClick={() => {
         props.Session.set('selectedListId', props.list._id);
       }}>
-      <h4>{props.list.listName}</h4>
-      { props.list.selected ? <p>Selected, {props.list._id}</p>: undefined }
+      <h4 className="item__title">{props.list.listName}</h4>
     </div>
   );
 }

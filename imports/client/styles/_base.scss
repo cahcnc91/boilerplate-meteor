@@ -1,4 +1,5 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -16,6 +17,10 @@ body {
 h1 {
   font-weight: 300;
   margin-bottom: $space;
+}
+
+h2 {
+  
 }
 
 h4 {
@@ -38,4 +43,35 @@ input[type=text], input[type=email], input[type=password] {
   font-size: $base-font-size;
   margin-bottom: $space;
   padding: $input-spacing;
+}
+
+//input bars
+.item-field {
+  border-radius: 5px;
+	display: inline-block;
+	color: black;
+	text-align: center;
+	padding: .9em 1.8em;
+  border: none;
+  cursor: pointer;
+	outline: none;
+	-webkit-transition: all .1s linear;
+	-moz-transition: all .1s linear;
+  transition: all .1s linear;
+  margin-right: .5rem;
+}
+.item-field:hover {
+	background-color: $grey;
+}
+
+/* after button is clicked */
+.item-field.active {
+	width: 90%;
+	outline: none;
+	text-align: left;
+	cursor: inherit;
+}
+
+.add-bar {
+  margin: 0;
 }
