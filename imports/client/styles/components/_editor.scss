@@ -15,9 +15,7 @@
 }
 
 .editor__buttons {
-  bottom: $space;
-  margin: auto;
-  bottom: 0;
+   margin: 0 auto;
 }
 
 .editor__body {
@@ -29,11 +27,15 @@
 }
 
 .editor__add {
-  display: flex;
-  padding-top: $space; 
+  padding-top: $space;
 }
 
-.editor__add > input {
+.editor__add__wrapper {
+  display: flex;
+}
+
+
+.editor__add__wrapper > input {
   flex-grow: 1;
 }
 

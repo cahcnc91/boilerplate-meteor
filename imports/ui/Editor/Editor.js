@@ -32,8 +32,22 @@ export class Editor extends React.Component {
   }
 
   handleDelete() {
-    this.props.call("groceryLists.remove", this.props.list._id);
-    this.props.browserHistory.push("/dashboard");
+    let isAllowed = false;
+    const userId = Meteor.userId();
+
+    if(this.props.list.userId === userId) {
+      isAllowed = true;
+    } else {
+      let isAllowed = false;
+    }
+
+    if(isAllowed === true) {
+      this.props.call("groceryLists.remove", this.props.list._id);
+      this.props.browserHistory.push("/dashboard");
+      this.setState({error: null})
+    } else {
+      this.setState({error: 'You are not auhorized to do that'})
+    }
   }
 
   render() {
@@ -55,15 +69,19 @@ export class Editor extends React.Component {
           </div>
 
           <div className="editor__add">
-            <input className="item-field" type="text" ref="item" placeholder="Add Item" />
-            <button className="button" onClick={this.onSubmit.bind(this)}>+</button>
-            {errorP}
+            <div className="editor__add__wrapper">
+              <input className="item-field" type="text" ref="item" placeholder="Add Item" />
+              <div>
+                <button className="button" onClick={this.onSubmit.bind(this)}>+</button>
+              </div>
+            </div>
           </div>
 
           
           <ListOfItems items={items} list={this.props.list} />
 
           <div className="editor__buttons">
+            {errorP}
             <p>Total Items: {this.props.list.items.length}</p>
             <button
               className="button button--pill"

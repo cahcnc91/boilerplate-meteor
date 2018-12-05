@@ -4,17 +4,19 @@ import SimpleSchema from "simpl-schema";
 
 export const GroceryLists = new Mongo.Collection("groceryLists");
 
+//Publication, lists for user if he created the list or if he is a collaborator
 if (Meteor.isServer) {
   Meteor.publish("groceryLists", function() {
     return GroceryLists.find({
       $or: [
         { userId: this.userId },
-        { collaborator: { $elemMatch: { collaboratorId: this.userId } } }
+        { collaborator: { $in: [this.userId] } }
       ]
     });
   });
 }
 
+//ADD A LIST, listName needs to be a string, is required, user needs to be sign in
 Meteor.methods({
   "groceryLists.insert"(listName) {
     if (!this.userId) {
@@ -37,7 +39,7 @@ Meteor.methods({
     });
   },
 
-  //REMOVE LIST
+  //REMOVE LIST, user needs to be creator of list
   "groceryLists.remove"(_id) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
@@ -53,16 +55,17 @@ Meteor.methods({
     GroceryLists.remove({ _id, userId: this.userId });
   },
 
-  //REMOVE ITEM
+  //REMOVE ITEM, delete item from list
   "groceryLists.removeItem"(_id, item) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
     }
-
+    
     GroceryLists.update(
       {
-        _id,
-        userId: this.userId
+        $or: [ 
+          { _id: _id, userId: this.userId }, 
+          {  _id: _id, collaborator: { $in: [this.userId] } } ]
       },
       {
         $pull: {
@@ -125,9 +128,7 @@ Meteor.methods({
       },
       {
         $push: {
-          collaborator: {
-            collaboratorId: collaboratorId
-          }
+          collaborator: collaboratorId
         },
         $set: {
           lastUpdated: new Date().getTime()
@@ -144,10 +145,15 @@ Meteor.methods({
 
     GroceryLists.update(
       {
-        $and: [
-          { _id: _id },
-          { items: { $elemMatch: { _id: itemId } } }
-        ]
+        $or: [ {
+            userId: this.userId,
+            _id: _id ,
+            items: { $elemMatch: { _id: itemId } } 
+          }, {
+            collaborator: { $in: [this.userId]},
+            _id: _id ,
+            items: { $elemMatch: { _id: itemId } } 
+         } ]
       },
       { $set: { "items.$.checked": isChecked, "lastUpdated": new Date().getTime()}}
     );
