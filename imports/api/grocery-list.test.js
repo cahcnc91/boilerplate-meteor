@@ -10,6 +10,7 @@ if (Meteor.isServer) {
       listName: "tets list name 1",
       userId: "testUser1",
       items: [],
+      collaborator: [],
       updatedAt: 0
     };
 
@@ -18,6 +19,7 @@ if (Meteor.isServer) {
       listName: "tests list name 2",
       userId: "testUser2",
       items: [],
+      collaborator: [],
       updatedAt: 0
     };
 
@@ -62,58 +64,12 @@ if (Meteor.isServer) {
     });
 
     it("should not remove a list if invalid id", function() {
-      expect(() => {
-        Meteor.server.method_handlers["groceryLists.remove"].apply({
-          userId: "testUserId1"
-        });
-      }).toThrow();
-    });
-
-    it("should update list", function() {
-      const item = "cake";
-
-      Meteor.server.method_handlers["groceryLists.update"].apply(
-        {
-          userId: listOne.userId
-        },
-        [listOne._id,  item ]
+      Meteor.server.method_handlers["groceryLists.remove"].apply(
+        { userId: 'randomId' },
+        [listOne._id]
       );
 
-      const list = GroceryLists.findOne(listOne._id);
-      expect(list.items[0]).toContain({name: item});
-    });
-
-    it("should not update list if user was not creator", function() {
-      const listName = "This is a updated title for test list2.";
-
-      Meteor.server.method_handlers["groceryLists.update"].apply(
-        {
-          userId: "RandomId"
-        },
-        [listOne._id, { listName }]
-      );
-
-      const list = GroceryLists.findOne(listOne._id);
-
-      expect(list).toInclude(listOne);
-    });
-
-    it("should not update list if not authenticated", function() {
-      const listName = "This is a updated title for test list3.";
-      expect(() => {
-        Meteor.server.method_handlers["groceryLists.update"].apply({}, [
-          listOne._id,
-          { listName }
-        ]);
-      }).toThrow();
-    });
-
-    it("should not update a list if invalid id", function() {
-      expect(() => {
-        Meteor.server.method_handlers["groceryLists.remove"].apply({
-          userId: "testUserId1"
-        });
-      }).toThrow();
+      expect(GroceryLists.findOne({ _id: listOne._id })).toExist();
     });
 
     it("should return a users lists", function() {
@@ -126,7 +82,7 @@ if (Meteor.isServer) {
       expect(lists[0]).toInclude(listOne);
     });
 
-    it("should return no notes for user that has none", function() {
+    it("should return no list for user that has none", function() {
       const res = Meteor.server.publish_handlers.groceryLists.apply({
         userId: "randomUser"
       });
@@ -134,5 +90,29 @@ if (Meteor.isServer) {
 
       expect(lists.length).toBe(0);
     });
+    
+    it("should add a collaborator if owner of list", function() {
+      const userCollaboratorId = 'testid'
+      Meteor.server.method_handlers["groceryLists.updateUsers"].apply(
+        { userId: listOne.userId },
+        [listOne._id, userCollaboratorId]
+      );
+
+      const list = GroceryLists.findOne(listOne._id);
+      expect(list.collaborator.length).toBe(1);
+      expect(list.collaborator[0]).toContain(userCollaboratorId);
+    });
+
+    it("should not add a collaborator if not owner of list", function() {
+      const userCollaboratorId = 'testid'
+      Meteor.server.method_handlers["groceryLists.updateUsers"].apply(
+        { userId: 'ramdonId' },
+        [listOne._id, userCollaboratorId]
+      );
+
+      const list = GroceryLists.findOne(listOne._id);
+      expect(list.collaborator.length).toBe(0);
+    });
+
   });
 }

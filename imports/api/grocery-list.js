@@ -4,7 +4,8 @@ import SimpleSchema from "simpl-schema";
 
 export const GroceryLists = new Mongo.Collection("groceryLists");
 
-//Publication, lists for user if he created the list or if he is a collaborator
+//PUBLICATION OF AVAILABLE LISTS
+// lists for user if he created the list or if he is a collaborator
 if (Meteor.isServer) {
   Meteor.publish("groceryLists", function() {
     return GroceryLists.find({
@@ -16,7 +17,8 @@ if (Meteor.isServer) {
   });
 }
 
-//ADD A LIST, listName needs to be a string, is required, user needs to be sign in
+//ADD A LIST 
+//listName needs to be a string, listName is required, user needs to be signin 
 Meteor.methods({
   "groceryLists.insert"(listName) {
     if (!this.userId) {
@@ -39,23 +41,18 @@ Meteor.methods({
     });
   },
 
-  //REMOVE LIST, user needs to be creator of list
+  //REMOVE LIST
+  // user needs to be creator of list
   "groceryLists.remove"(_id) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
     }
 
-    new SimpleSchema({
-      _id: {
-        type: String,
-        min: 1
-      }
-    }).validate({ _id });
-
     GroceryLists.remove({ _id, userId: this.userId });
   },
 
-  //REMOVE ITEM, delete item from list
+  //REMOVE ITEM FROM LIST
+  //user needs to be a collaborator or owner
   "groceryLists.removeItem"(_id, item) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
@@ -80,25 +77,29 @@ Meteor.methods({
     );
   },
 
-  //UPDATE LIST, ADD ITEM
+  //UPDATE LIST - ADD ITEM
+  // item needs to be a string with more than 1 character, is required,
+  // user needs to be either owner or collaborator
   "groceryLists.update"(_id, item) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
     }
 
     new SimpleSchema({
-      _id: {
+      item: {
         type: String,
-        min: 1
+        min: 1,
+        required: true
       }
     }).validate({
-      _id
+      item
     });
 
     GroceryLists.update(
       {
-        _id,
-        userId: this.userId
+        $or: [ 
+          { _id: _id, userId: this.userId }, 
+          { _id: _id, collaborator: { $in: [this.userId] } } ]
       },
       {
         $push: {
@@ -115,7 +116,8 @@ Meteor.methods({
     );
   },
 
-  //UPDATE LIST, ADD COLLABORATOR
+  //UPDATE LIST
+  //add a collaborator, user needs to be the owner
   "groceryLists.updateUsers"(_id, collaboratorId) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
@@ -138,25 +140,23 @@ Meteor.methods({
   },
 
   //UPDATE ITEM, CHANGE CHECKED STATE
+  //updates property check of each item, user nees to be a collaborator or owner
   "groceryLists.updateItem"(_id, itemId, isChecked) {
     if (!this.userId) {
       throw new Meteor.Error("Not authorized");
     }
 
-    GroceryLists.update(
-      {
-        $or: [ {
-            userId: this.userId,
-            _id: _id ,
-            items: { $elemMatch: { _id: itemId } } 
-          }, {
-            collaborator: { $in: [this.userId]},
-            _id: _id ,
-            items: { $elemMatch: { _id: itemId } } 
-         } ]
-      },
+    GroceryLists.update({
+      $or: [
+        { userId: this.userId },
+        { collaborator: { $in: [this.userId] }}
+      ],
+      $and : [
+        {_id: _id},
+        {items: { $elemMatch: { _id: itemId } }}
+      ]},
       { $set: { "items.$.checked": isChecked, "lastUpdated": new Date().getTime()}}
     );
   }
-
 });
+

@@ -19,7 +19,7 @@ export class Editor extends React.Component {
     };
   }
 
-  onSubmit(e) {
+  addItem(e) {
     e.preventDefault();
 
     const item = this.refs.item.value.trim();
@@ -72,7 +72,7 @@ export class Editor extends React.Component {
             <div className="editor__add__wrapper">
               <input className="item-field" type="text" ref="item" placeholder="Add Item" />
               <div>
-                <button className="button" onClick={this.onSubmit.bind(this)}>+</button>
+                <button className="button" onClick={this.addItem.bind(this)}>+</button>
               </div>
             </div>
           </div>

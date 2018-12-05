@@ -16,7 +16,7 @@ if(Meteor.isClient) {
 
     it('should use title props as h1 text', function () {
       const wrapper = mount( <PrivateHeader title='Test title 1'/>)
-      const buttonText = wrapper.find('h1').text();
+      const buttonText = wrapper.find('h2').text();
 
       expect(buttonText).toBe('Test title 1');
     })
