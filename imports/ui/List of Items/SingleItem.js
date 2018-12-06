@@ -28,7 +28,7 @@ export const SingleItem = (props) => {
         <label htmlFor={props.item._id}>{props.item.name}</label>
       </div>
       <div className="edit__button__remove">
-        <button className="button--round" onClick={handleRemove}>X</button>
+        <ion-icon name="close-circle" onClick={handleRemove} size="large" className="button-icon"></ion-icon>
       </div>
     </div>
   );

@@ -116,6 +116,28 @@ Meteor.methods({
     );
   },
 
+  //UPDATE LIST - Clear all items
+  // user needs to be either owner or collaborator
+  "groceryLists.updateClear"(_id) {
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized");
+    }
+
+    GroceryLists.update(
+      {
+        $or: [ 
+          { _id: _id, userId: this.userId }, 
+          { _id: _id, collaborator: { $in: [this.userId] } } ]
+      },
+      {
+        $set: {
+          lastUpdated: new Date().getTime(),
+          items: []
+        }
+      }
+    );
+  },
+
   //UPDATE LIST
   //add a collaborator, user needs to be the owner
   "groceryLists.updateUsers"(_id, collaboratorId) {

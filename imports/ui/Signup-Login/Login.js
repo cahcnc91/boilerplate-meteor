@@ -42,7 +42,9 @@ export class Login extends React.Component {
             />
             <button className="button">Login</button>
           </form>
-          <Link to="/signup">Need a account?</Link>
+          <div className="boxed-link">
+            <Link to="/signup">Need a account?</Link>
+          </div>
         </div>
       </div>
     );

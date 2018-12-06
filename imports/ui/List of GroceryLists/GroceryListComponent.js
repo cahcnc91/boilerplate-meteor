@@ -12,13 +12,10 @@ export const GroceryListComponent = (props) => {
     return (
       <div className="list-of-lists">
         <GroceryListHeader />
-        
-        <div className="list-item">
           {props.lists.length === 0? <EmptyList /> : undefined}
-          { props.lists.map(list => {
+          {props.lists.map(list => {
             return <SingleListItem key={list._id} list={list}/>;
           })}
-        </div>
       </div>
     );
 

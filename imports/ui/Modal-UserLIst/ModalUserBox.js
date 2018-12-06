@@ -11,9 +11,13 @@ export class ModalUserBox extends React.Component {
 
   render () {
     return (
-      <div>
-          {this.props.user.emails[0].address}
-          <button onClick={this.onSubmit.bind(this)}>+</button>
+      <div className="modal-item">
+        <div className="edit__items">
+          <p>{this.props.user.emails[0].address}</p>
+          <div>
+            <ion-icon name="add-circle" onClick={this.onSubmit.bind(this)} size="large" className="button-icon-modal"></ion-icon>
+          </div>
+        </div>
       </div>  
     );
   }

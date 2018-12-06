@@ -68,6 +68,42 @@ if (Meteor.isServer) {
       expect(GroceryLists.findOne({ _id: listOne._id, items: { $elemMatch: { _id: listOne.items[0]._id } }   })).toExist();
     });
 
+    it("should clear list if owner", function() {
+      Meteor.server.method_handlers["groceryLists.updateClear"].apply(
+        {
+          userId: listOne.userId
+        },
+        [listOne._id]
+      );
+
+      const list = GroceryLists.findOne(listOne._id);
+      expect(list.items.length).toBe(0);
+    });
+
+    it("should clear list if collaborator", function() {
+      Meteor.server.method_handlers["groceryLists.updateClear"].apply(
+        {
+          userId: listOne.collaborator[0]
+        },
+        [listOne._id]
+      );
+
+      const list = GroceryLists.findOne(listOne._id);
+      expect(list.items.length).toBe(0);
+    });
+
+    it("should not clear list if not authorized", function() {
+      Meteor.server.method_handlers["groceryLists.updateClear"].apply(
+        {
+          userId: "random"
+        },
+        [listOne._id]
+      );
+
+      const list = GroceryLists.findOne(listOne._id);
+      expect(list.items.length).toBe(1);
+    });
+
     it("should update list and add item if owner", function() {
       const item = "cake";
 

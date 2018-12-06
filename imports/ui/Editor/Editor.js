@@ -31,6 +31,10 @@ export class Editor extends React.Component {
     this.refs.item.value = "";
   }
 
+  handleClear() {
+    this.props.call("groceryLists.updateClear", this.props.list._id);
+  }
+
   handleDelete() {
     let isAllowed = false;
     const userId = Meteor.userId();
@@ -77,7 +81,6 @@ export class Editor extends React.Component {
             </div>
           </div>
 
-          
           <ListOfItems items={items} list={this.props.list} />
 
           <div className="editor__buttons">
@@ -89,7 +92,7 @@ export class Editor extends React.Component {
             >
               Delete List
             </button>
-            <button className="button button--pill">Clear List</button>
+            <button className="button button--pill" onClick={this.handleClear.bind(this)}>Clear List</button>
             <button
               onClick={() => this.setState({ isOpen: true })}
               className="button button--pill"

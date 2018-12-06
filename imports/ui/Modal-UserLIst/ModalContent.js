@@ -11,7 +11,7 @@ export class ModalContent extends React.Component {
     if( this.props.list.userId === currentUser){
       isOwner = (
         <div>
-          <div className="modal-header">
+          <div className="title-modal">
             <h2>Choose a User to share your list</h2>
           </div>
           <div className="modal-body">
@@ -47,6 +47,6 @@ ModalContent.propTypes = {
   Meteor.subscribe('userList');
 
   return {
-    listUser: Meteor.users.find().fetch(),
+    listUser: Meteor.users.find({_id: {$ne: Meteor.userId()}}).fetch(),
     }
 }, ModalContent);

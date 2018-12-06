@@ -6,11 +6,11 @@ export const SingleListItem = (props) => {
   const className = props.list.selected ? 'item item--selected' : 'item';
 
   return (
-    <div className={className} onClick={() => {
-        props.Session.set('selectedListId', props.list._id);
-      }}>
-      <h4 className="item__title">{props.list.listName}</h4>
-    </div>
+      <div className={className} onClick={() => {
+          props.Session.set('selectedListId', props.list._id);
+        }}>
+        <h4 className="item__title">{props.list.listName}</h4>
+      </div>
   );
 }
 
