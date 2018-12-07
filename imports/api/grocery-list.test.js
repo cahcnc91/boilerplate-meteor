@@ -31,7 +31,7 @@ if (Meteor.isServer) {
 
     it("should insert new grocery list", function() {
       const id = "testid1";
-      const newListName = "New name";
+      const newListName = 'test list';
       const _id = Meteor.server.method_handlers["groceryLists.insert"].apply(
         { userId: id },
         [newListName]

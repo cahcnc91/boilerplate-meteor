@@ -6,7 +6,6 @@ import { Session } from "meteor/session";
 export const PrivateHeader = props => {
   const icon = props.isNavOpen ? <ion-icon name="close" size="large"></ion-icon> : <ion-icon name="menu" size="large"></ion-icon>;
 
-  console.log(props.isNavOpen)
   return (
     <div className="header">
       <div className="header__content">

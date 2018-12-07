@@ -26,6 +26,7 @@ export class Editor extends React.Component {
     if (item === ""){
       return this.setState({error: 'Please add text to add item.'})
     }
+
     this.props.call("groceryLists.update", this.props.list._id, item);
     this.setState({error: null})
     this.refs.item.value = "";
@@ -46,6 +47,7 @@ export class Editor extends React.Component {
     }
 
     if(isAllowed === true) {
+      
       this.props.call("groceryLists.remove", this.props.list._id);
       this.props.browserHistory.push("/dashboard");
       this.setState({error: null})

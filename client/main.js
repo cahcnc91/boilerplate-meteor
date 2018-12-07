@@ -25,7 +25,6 @@ Tracker.autorun(() => {
 
 Tracker.autorun(() => {
   const isNavOpen = Session.get("isNavOpen");
-
   document.body.classList.toggle("is-nav-open", isNavOpen);
 });
 
