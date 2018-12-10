@@ -6,7 +6,7 @@ import { GroceryLists } from "./grocery-list";
 if (Meteor.isServer) {
   describe("groceryLists", function() {
     const listOne = {
-      _id: 'testListId1',
+      _id: "testListId1",
       listName: "tets list name 1",
       userId: "testUser1",
       items: [],
@@ -15,7 +15,7 @@ if (Meteor.isServer) {
     };
 
     const listTwo = {
-      _id: 'testListId2',
+      _id: "testListId2",
       listName: "tests list name 2",
       userId: "testUser2",
       items: [],
@@ -31,7 +31,7 @@ if (Meteor.isServer) {
 
     it("should insert new grocery list", function() {
       const id = "testid1";
-      const newListName = 'test list';
+      const newListName = "testlist";
       const _id = Meteor.server.method_handlers["groceryLists.insert"].apply(
         { userId: id },
         [newListName]
@@ -65,7 +65,7 @@ if (Meteor.isServer) {
 
     it("should not remove a list if invalid id", function() {
       Meteor.server.method_handlers["groceryLists.remove"].apply(
-        { userId: 'randomId' },
+        { userId: "randomId" },
         [listOne._id]
       );
 
@@ -90,9 +90,9 @@ if (Meteor.isServer) {
 
       expect(lists.length).toBe(0);
     });
-    
+
     it("should add a collaborator if owner of list", function() {
-      const userCollaboratorId = 'testid'
+      const userCollaboratorId = "testid";
       Meteor.server.method_handlers["groceryLists.updateUsers"].apply(
         { userId: listOne.userId },
         [listOne._id, userCollaboratorId]
@@ -104,15 +104,14 @@ if (Meteor.isServer) {
     });
 
     it("should not add a collaborator if not owner of list", function() {
-      const userCollaboratorId = 'testid'
+      const userCollaboratorId = "testid";
       Meteor.server.method_handlers["groceryLists.updateUsers"].apply(
-        { userId: 'ramdonId' },
+        { userId: "ramdonId" },
         [listOne._id, userCollaboratorId]
       );
 
       const list = GroceryLists.findOne(listOne._id);
       expect(list.collaborator.length).toBe(0);
     });
-
   });
 }

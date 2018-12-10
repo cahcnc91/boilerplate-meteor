@@ -28,6 +28,7 @@ Meteor.methods({
     new SimpleSchema({
       listName: {
         type: String,
+        min: 1,
         required: true
       }
     }).validate({ listName });
